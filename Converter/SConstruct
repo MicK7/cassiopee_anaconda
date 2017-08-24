@@ -1,0 +1,7 @@
+import os
+prod = os.getenv("ELSAPROD")
+if prod is None:
+  variant_dir = "build"
+else:
+  variant_dir = "build/"+prod
+SConscript('setup.scons', variant_dir=variant_dir)

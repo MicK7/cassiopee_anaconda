@@ -1,0 +1,23 @@
+# - getFamilyZones (pyTree) -
+import Converter.PyTree as C
+import Generator.PyTree as G
+
+a = G.cylinder((0,0,0), 1., 1.5, 0., 360., 1., (80,30,2))
+b = G.cylinder((3,0,0), 1., 1.5, 0., 360., 1., (80,30,2))
+
+c = G.cart((-0.1,0.9,0), (0.01,0.01,1.), (20,20,2))
+
+a = C.tagWithFamily(a, 'CYLINDER')
+b = C.tagWithFamily(b, 'CYLINDER')
+c = C.tagWithFamily(c, 'CART')
+
+t = C.newPyTree(['Base',a,b,c])
+t[2][1] = C.addFamily2Base(t[2][1], 'CYLINDER')
+t[2][1] = C.addFamily2Base(t[2][1], 'CART')
+
+zones = C.getFamilyZones(t, 'CYLINDER')
+t2 = C.newPyTree(['Base'])
+t2[2][1][2] += zones
+t2[2][1] = C.addFamily2Base(t2[2][1], 'CYLINDER')
+
+C.convertPyTree2File(t2, 'out.cgns')
